@@ -5,9 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -25,6 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
         continueBtn1 = findViewById(R.id.continueBtn1);
         SharedPreferences sp = getSharedPreferences("surveys_made", MODE_PRIVATE);
 
+
         continueBtn1.setOnClickListener(
                 (v)->{
                     //Assign variable to editText
@@ -36,18 +42,17 @@ public class RegisterActivity extends AppCompatActivity {
                     } else {
                         //Add variables to shared preferences
                         sp.edit().putString("name", name).apply();
-                        sp.edit().putString("identification", code).apply();
+                        sp.edit().putString("code", code).apply();
 
-                        if (code == codeCompare){
-                            Toast.makeText(this, "Código ya registrado", Toast.LENGTH_SHORT).show();
-                        } else {
-                            //Start new activity
-                            Intent nexus = new Intent(this, PreparationActivity.class);
-                            startActivity(nexus);
-                            finish();
+                            if (code.equals(codeCompare)){
+                                Toast.makeText(this, "Código ya registrado", Toast.LENGTH_SHORT).show();
+                            } else {
+                                //Start new activity
+                                Intent preparation = new Intent(this, PreparationActivity.class);
+                                startActivity(preparation);
+                                finish();
+                            }
                         }
-
-                    }
                 }
         );
     }
@@ -57,5 +62,6 @@ public class RegisterActivity extends AppCompatActivity {
         super.onResume();
         SharedPreferences sp = getSharedPreferences("surveys_made", MODE_PRIVATE);
         codeCompare = sp.getString("code", "");
+
     }
 }
